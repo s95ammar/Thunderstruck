@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/forecastFragment">
+
+    <fragment
+        android:id="@+id/forecastFragment"
+        android:name="com.s95ammar.thunderstruck.ui.appscreens.forcast.ForecastFragment"
+        android:label="forecast_fragment"
+        tools:layout="@layout/forecast_fragment" >
+        <action
+            android:id="@+id/action_forecastFragment_to_locationPickerFragment"
+            app:destination="@id/locationPickerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/locationPickerFragment"
+        android:name="com.s95ammar.thunderstruck.ui.appscreens.location.LocationPickerFragment"
+        android:label="location_picker_fragment"
+        tools:layout="@layout/location_picker_fragment" />
+</navigation>
