@@ -22,13 +22,6 @@ object RetrofitModule {
     @Provides
     fun provideOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
-            .addInterceptor { chain ->
-                val requestWithApiKey = chain.request()
-                    .newBuilder()
-                    .addHeader(AccuWeatherApiConfig.HEADER_KEY_API_KEY, AccuWeatherApiConfig.HEADER_VALUE_API_KEY)
-                    .build()
-                chain.proceed(requestWithApiKey)
-            }
             .apply {
                 if (BuildConfig.DEBUG) addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY })
             }

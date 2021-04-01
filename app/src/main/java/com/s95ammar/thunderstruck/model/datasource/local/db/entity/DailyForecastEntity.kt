@@ -7,12 +7,13 @@ import com.s95ammar.thunderstruck.model.datasource.local.db.ThunderstruckDbConfi
 
 @Entity(tableName = ThunderstruckDbConfig.TABLE_NAME_DAILY_FORECAST)
 data class DailyForecastEntity(
-    val timestampUnixMs: Long,
+    val dayTimestampUnixMs: Long,
     @IntIconType val dayIconType: Int,
     @IntIconType val nightIconType: Int,
     val minTemperature: Int,
     val maxTemperature: Int,
-    val temperatureUnit: String
+    val temperatureUnit: String,
+    val createdTimestampUnixMs: Long
 ) {
     @PrimaryKey(autoGenerate = true)
     var id = 0

@@ -14,7 +14,7 @@ data class DailyForecast(
     object EntityMapper {
         fun fromEntity(dailyForecastEntity: DailyForecastEntity): DailyForecast {
             return DailyForecast(
-                timestampUnixMs = dailyForecastEntity.timestampUnixMs,
+                timestampUnixMs = dailyForecastEntity.dayTimestampUnixMs,
                 dayIconType = dailyForecastEntity.dayIconType,
                 nightIconType = dailyForecastEntity.nightIconType,
                 minTemperature = dailyForecastEntity.minTemperature,

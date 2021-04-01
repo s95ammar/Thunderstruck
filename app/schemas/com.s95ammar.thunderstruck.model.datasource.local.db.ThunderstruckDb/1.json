@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "a48dba0e04c0191430110d3e7e0acacb",
+    "identityHash": "e9ca6b7b0d36754bef7c825e8487cc6a",
     "entities": [
       {
-        "tableName": "forecast",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `timestampUnix` INTEGER NOT NULL, `dayIconType` INTEGER NOT NULL, `nightIconType` INTEGER NOT NULL, `minTemperature` INTEGER NOT NULL, `maxTemperature` INTEGER NOT NULL, `temperatureUnit` TEXT NOT NULL)",
+        "tableName": "dailyForecast",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `dayTimestampUnixMs` INTEGER NOT NULL, `dayIconType` INTEGER NOT NULL, `nightIconType` INTEGER NOT NULL, `minTemperature` INTEGER NOT NULL, `maxTemperature` INTEGER NOT NULL, `temperatureUnit` TEXT NOT NULL, `createdTimestampUnixMs` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -15,8 +15,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "timestampUnix",
-            "columnName": "timestampUnix",
+            "fieldPath": "dayTimestampUnixMs",
+            "columnName": "dayTimestampUnixMs",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -49,6 +49,12 @@
             "columnName": "temperatureUnit",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "createdTimestampUnixMs",
+            "columnName": "createdTimestampUnixMs",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -64,7 +70,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a48dba0e04c0191430110d3e7e0acacb')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e9ca6b7b0d36754bef7c825e8487cc6a')"
     ]
   }
 }

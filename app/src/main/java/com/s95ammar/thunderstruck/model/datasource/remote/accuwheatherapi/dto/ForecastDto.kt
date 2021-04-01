@@ -9,7 +9,7 @@ class ForecastDto(
     data class DailyForecastDto(
         @SerializedName("Date") val date: String?,
         @SerializedName("Day") val day: Day?,
-        @SerializedName("EpochDate") val epochDate: Int?,
+        @SerializedName("EpochDate") val epochDateSec: Int?,
         @SerializedName("Night") val night: Night?,
         @SerializedName("Temperature") val temperature: Temperature?
     )

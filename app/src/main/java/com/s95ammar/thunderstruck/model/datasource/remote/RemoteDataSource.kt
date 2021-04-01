@@ -1,14 +1,16 @@
 package com.s95ammar.thunderstruck.model.datasource.remote
 
 import com.s95ammar.thunderstruck.model.datasource.remote.accuwheatherapi.ApiService
-import kotlinx.coroutines.flow.flow
+import com.s95ammar.thunderstruck.model.datasource.remote.accuwheatherapi.dto.ForecastDto
+import retrofit2.Response
 import javax.inject.Inject
 
 class RemoteDataSource @Inject constructor(
     private val apiService: ApiService
 ) {
-    fun getFiveDayForecast() = flow {
-        emit(apiService.getFiveDayForecast())
+
+    suspend fun getFiveDayForecast(locationKey: String): Response<ForecastDto> {
+        return apiService.getFiveDayForecast(locationKey)
     }
 
 }
