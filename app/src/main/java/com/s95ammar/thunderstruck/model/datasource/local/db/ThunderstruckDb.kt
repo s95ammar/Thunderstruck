@@ -10,5 +10,5 @@ import com.s95ammar.thunderstruck.model.datasource.local.db.entity.DailyForecast
     version = ThunderstruckDbConfig.DB_VERSION
 )
 abstract class ThunderstruckDb : RoomDatabase() {
-    abstract fun getForecastDao(): ForecastDao
+    abstract val forecastDao: ForecastDao
 }

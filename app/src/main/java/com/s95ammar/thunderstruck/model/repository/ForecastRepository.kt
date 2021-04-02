@@ -3,7 +3,6 @@ package com.s95ammar.thunderstruck.model.repository
 import com.s95ammar.thunderstruck.model.datasource.Resource
 import com.s95ammar.thunderstruck.model.datasource.local.LocalDataSource
 import com.s95ammar.thunderstruck.model.datasource.local.db.entity.DailyForecastEntity
-import com.s95ammar.thunderstruck.model.datasource.mappers.ForecastDtoMapper
 import com.s95ammar.thunderstruck.model.datasource.networkBoundResource
 import com.s95ammar.thunderstruck.model.datasource.remote.RemoteDataSource
 import kotlinx.coroutines.flow.Flow
@@ -18,15 +17,15 @@ class ForecastRepository @Inject constructor(
         const val CACHE_MAX_AGE_MILLIS = 30 * 60 * 1000 // 30 min
     }
 
-    fun getFiveDayForecast(locationKey: String = "324505" /*TODO: remove default value*/, forceUpdate: Boolean = false): Flow<Resource<List<DailyForecastEntity>>> {
+    fun getFiveDayForecast(locationKey: String = "324505" /*Kyiv location key. TODO: remove default value*/, forceUpdate: Boolean = false): Flow<Resource<List<DailyForecastEntity>>> {
         return networkBoundResource(
-            queryFlow = { localDataSource.getFullDailyForecastEntityList() },
+            queryFlow = localDataSource.getFullDailyForecastEntityList(),
             fetch = { remoteDataSource.getFiveDayForecast(locationKey) },
             insert = { forecastDto ->
                 val entityList = forecastDto.dailyForecasts.orEmpty().mapNotNull {
-                    ForecastDtoMapper.toEntity(it)
+                    DailyForecastEntity.DtoMapper.toEntity(it)
                 }
-                localDataSource.insert(entityList)
+                localDataSource.deleteAllAndInsert(entityList)
             },
             shouldFetch = { dailyForecastEntityList ->
 

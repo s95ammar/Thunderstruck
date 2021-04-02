@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.*
 import retrofit2.Response
 
 fun <Dto, Entity> networkBoundResource(
-    queryFlow: () -> Flow<Entity>,
+    queryFlow: Flow<Entity>,
     fetch: suspend () -> Response<Dto>,
     insert: suspend (Dto) -> Unit,
     shouldFetch: (Entity) -> Boolean = { true }
@@ -13,7 +13,7 @@ fun <Dto, Entity> networkBoundResource(
 
     emit(Resource.Loading())
 
-    val entity = queryFlow().first()
+    val entity = queryFlow.first()
 
     val resultFlow = if (shouldFetch(entity)) {
 
@@ -22,14 +22,14 @@ fun <Dto, Entity> networkBoundResource(
         try {
             val dto = fetch().parseResponse()
             insert(dto)
-            queryFlow().map { Resource.Success(it) }
+            queryFlow.map { Resource.Success(it) }
         } catch (t: Throwable) {
-//            queryFlow().map { Resource.Error(data = it, error = t) }
+//            queryFlow.map { Resource.Error(data = it, error = t) }
             flowOf(Resource.Error(data = entity, error = t))
         }
 
     } else {
-//        queryFlow().map { Resource.Success(it) }
+//        queryFlow.map { Resource.Success(it) }
         flowOf(Resource.Success(entity))
     }
 

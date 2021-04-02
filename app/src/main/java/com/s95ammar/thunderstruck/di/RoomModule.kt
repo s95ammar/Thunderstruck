@@ -23,5 +23,5 @@ object RoomModule {
 
     @Singleton
     @Provides
-    fun provideScheduleDao(db: ThunderstruckDb) = db.getForecastDao()
+    fun provideScheduleDao(db: ThunderstruckDb) = db.forecastDao
 }

@@ -11,9 +11,12 @@ import kotlinx.coroutines.flow.Flow
 interface ForecastDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(vararg forecastEntity: DailyForecastEntity)
+    suspend fun insert(forecastEntityList: List<DailyForecastEntity>)
 
     @Query("SELECT * FROM dailyForecast")
     fun getFullDailyForecastEntityList(): Flow<List<DailyForecastEntity>>
+
+    @Query("DELETE FROM dailyForecast")
+    suspend fun deleteAllDailyForecasts()
 
 }
