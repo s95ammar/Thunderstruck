@@ -1,5 +1,50 @@
 package com.s95ammar.thunderstruck.model.common
 
+import androidx.annotation.IntDef
+
+@IntDef(
+    IntIconType.SUNNY,
+    IntIconType.MOSTLY_SUNNY,
+    IntIconType.PARTLY_SUNNY,
+    IntIconType.INTERMITTENT_CLOUDS_DAY,
+    IntIconType.HAZY_SUNSHINE,
+    IntIconType.MOSTLY_CLOUDY_DAY,
+    IntIconType.CLOUDY,
+    IntIconType.DREARY,
+    IntIconType.FOG,
+    IntIconType.SHOWERS,
+    IntIconType.MOSTLY_CLOUDY_W_SHOWERS_DAY,
+    IntIconType.PARTLY_SUNNY_W_SHOWERS,
+    IntIconType.T_STORMS,
+    IntIconType.MOSTLY_CLOUDY_W_T_STORMS_DAY,
+    IntIconType.PARTLY_SUNNY_W_T_STORMS,
+    IntIconType.RAIN,
+    IntIconType.FLURRIES,
+    IntIconType.MOSTLY_CLOUDY_W_FLURRIES_DAY,
+    IntIconType.PARTLY_SUNNY_W_FLURRIES,
+    IntIconType.SNOW,
+    IntIconType.MOSTLY_CLOUDY_W_SNOW_DAY,
+    IntIconType.ICE,
+    IntIconType.SLEET,
+    IntIconType.FREEZING_RAIN,
+    IntIconType.RAIN_AND_SNOW,
+    IntIconType.HOT,
+    IntIconType.COLD,
+    IntIconType.WINDY,
+    IntIconType.CLEAR,
+    IntIconType.MOSTLY_CLEAR,
+    IntIconType.PARTLY_CLOUDY,
+    IntIconType.INTERMITTENT_CLOUDS_NIGHT,
+    IntIconType.HAZY_MOONLIGHT,
+    IntIconType.MOSTLY_CLOUDY_NIGHT,
+    IntIconType.PARTLY_CLOUDY_W_SHOWERS,
+    IntIconType.MOSTLY_CLOUDY_W_SHOWERS_NIGHT,
+    IntIconType.PARTLY_CLOUDY_W_T_STORMS,
+    IntIconType.MOSTLY_CLOUDY_W_T_STORMS_NIGHT,
+    IntIconType.MOSTLY_CLOUDY_W_FLURRIES_NIGHT,
+    IntIconType.MOSTLY_CLOUDY_W_SNOW_NIGHT
+)
+@Retention(AnnotationRetention.SOURCE)
 annotation class IntIconType {
     companion object {
         const val SUNNY = 1

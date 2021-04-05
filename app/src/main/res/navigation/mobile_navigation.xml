@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/forecastFragment"
-        android:name="com.s95ammar.thunderstruck.ui.appscreens.forcast.ForecastFragment"
+        android:name="com.s95ammar.thunderstruck.ui.appscreens.forcast.DailyForecastFragment"
         android:label="forecast_fragment"
-        tools:layout="@layout/forecast_fragment" >
+        tools:layout="@layout/daily_forecast_fragment" >
         <action
             android:id="@+id/action_forecastFragment_to_locationPickerFragment"
             app:destination="@id/locationPickerFragment" />

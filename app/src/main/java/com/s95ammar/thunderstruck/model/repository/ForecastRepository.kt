@@ -5,6 +5,7 @@ import com.s95ammar.thunderstruck.model.datasource.local.LocalDataSource
 import com.s95ammar.thunderstruck.model.datasource.local.db.entity.DailyForecastEntity
 import com.s95ammar.thunderstruck.model.datasource.networkBoundResource
 import com.s95ammar.thunderstruck.model.datasource.remote.RemoteDataSource
+import com.s95ammar.thunderstruck.model.datasource.remote.accuwheatherapi.isDataFresh
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -13,11 +14,13 @@ class ForecastRepository @Inject constructor(
     private val remoteDataSource: RemoteDataSource
 ) {
 
-    companion object {
-        const val CACHE_MAX_AGE_MILLIS = 30 * 60 * 1000 // 30 min
+    fun saveLocationKey(locationKey: String) {
+        localDataSource.saveLocationKey(locationKey)
     }
 
-    fun getFiveDayForecast(locationKey: String = "324505" /*Kyiv location key. TODO: remove default value*/, forceUpdate: Boolean = false): Flow<Resource<List<DailyForecastEntity>>> {
+    fun getLocationKey() = localDataSource.getLocationKey()
+
+    fun getFiveDayForecast(locationKey: String, forceUpdate: Boolean = false): Flow<Resource<List<DailyForecastEntity>>> {
         return networkBoundResource(
             queryFlow = localDataSource.getFullDailyForecastEntityList(),
             fetch = { remoteDataSource.getFiveDayForecast(locationKey) },
@@ -29,17 +32,12 @@ class ForecastRepository @Inject constructor(
             },
             shouldFetch = { dailyForecastEntityList ->
 
-                val isCacheOutdated = {
-                    val currentTimeMillis = System.currentTimeMillis()
+                val isCacheOutdated = dailyForecastEntityList.any { entity -> !isDataFresh(entity.createdTimestampUnixMs) }
 
-                    dailyForecastEntityList.any { entity ->
-                        currentTimeMillis - entity.createdTimestampUnixMs > CACHE_MAX_AGE_MILLIS
-                    }
-                }
-
-                forceUpdate || dailyForecastEntityList.isEmpty() || isCacheOutdated()
+                forceUpdate || dailyForecastEntityList.isEmpty() || isCacheOutdated
             }
         )
     }
+
 
 }

@@ -2,6 +2,7 @@ package com.s95ammar.thunderstruck.model.datasource.remote
 
 import com.s95ammar.thunderstruck.model.datasource.remote.accuwheatherapi.ApiService
 import com.s95ammar.thunderstruck.model.datasource.remote.accuwheatherapi.dto.ForecastDto
+import com.s95ammar.thunderstruck.security.Security
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -10,7 +11,7 @@ class RemoteDataSource @Inject constructor(
 ) {
 
     suspend fun getFiveDayForecast(locationKey: String): Response<ForecastDto> {
-        return apiService.getFiveDayForecast(locationKey)
+        return apiService.getFiveDayForecast(locationKey, metric = true, Security.API_KEY)
     }
 
 }

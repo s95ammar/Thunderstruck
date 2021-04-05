@@ -1,6 +1,7 @@
 package com.s95ammar.thunderstruck.model.datasource
 
 import com.s95ammar.thunderstruck.model.datasource.remote.accuwheatherapi.error.ApiError
+import com.s95ammar.thunderstruck.model.datasource.remote.accuwheatherapi.error.EmptyResponseBodyError
 import kotlinx.coroutines.flow.*
 import retrofit2.Response
 
@@ -24,12 +25,10 @@ fun <Dto, Entity> networkBoundResource(
             insert(dto)
             queryFlow.map { Resource.Success(it) }
         } catch (t: Throwable) {
-//            queryFlow.map { Resource.Error(data = it, error = t) }
             flowOf(Resource.Error(data = entity, error = t))
         }
 
     } else {
-//        queryFlow.map { Resource.Success(it) }
         flowOf(Resource.Success(entity))
     }
 
@@ -40,7 +39,7 @@ fun <Dto, Entity> networkBoundResource(
 @Throws(ApiError::class)
 private fun <Dto> Response<Dto>.parseResponse(): Dto {
     if (isSuccessful) {
-        return body() ?: throw ApiError(code(), "empty response body")
+        return body() ?: throw EmptyResponseBodyError(code())
     } else {
         throw ApiError(code(), errorBody()?.string().orEmpty())
     }

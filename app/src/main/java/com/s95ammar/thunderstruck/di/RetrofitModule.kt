@@ -34,7 +34,7 @@ object RetrofitModule {
     @Singleton
     @Provides
     fun provideApiService(okHttpClient: OkHttpClient): ApiService {
-        return Retrofit.Builder().baseUrl(AccuWeatherApiConfig.BASE_URL)
+        return Retrofit.Builder().baseUrl(BuildConfig.SERVER_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setPrettyPrinting().create()))
             .client(okHttpClient)
             .build()

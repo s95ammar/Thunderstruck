@@ -23,4 +23,12 @@ class LocalDataSource @Inject constructor(
         return db.forecastDao.getFullDailyForecastEntityList()
     }
 
+    fun saveLocationKey(locationKey: String) {
+        sharedPrefsManager.saveLocationKey(locationKey)
+    }
+
+    fun getLocationKey(): String? {
+        return sharedPrefsManager.loadLocationKey()
+    }
+
 }
