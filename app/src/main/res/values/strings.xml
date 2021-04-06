@@ -3,5 +3,9 @@
     <string name="format_temperature_with_unit">%d° %s</string>
     <string name="data_status_fresh">Data is up-to-date</string>
     <string name="data_status_outdated">Warning! Data is outdated!</string>
+    <string name="city_name">City name</string>
     <string name="format_last_updated">Last updated: %s</string>
+    <string name="format_location">%s, %s, %s</string>
+    <string name="current_location">Location: %s. Tap to change</string>
+    <string name="not_selected">not selected</string>
 </resources>

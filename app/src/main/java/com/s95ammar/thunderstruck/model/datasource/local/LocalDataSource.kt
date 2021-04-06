@@ -4,6 +4,7 @@ import androidx.room.withTransaction
 import com.s95ammar.thunderstruck.model.datasource.local.db.ThunderstruckDb
 import com.s95ammar.thunderstruck.model.datasource.local.db.entity.DailyForecastEntity
 import com.s95ammar.thunderstruck.model.datasource.local.sharedprefs.SharedPrefsManager
+import com.s95ammar.thunderstruck.ui.appscreens.location.data.LocationInfo
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -23,12 +24,12 @@ class LocalDataSource @Inject constructor(
         return db.forecastDao.getFullDailyForecastEntityList()
     }
 
-    fun saveLocationKey(locationKey: String) {
-        sharedPrefsManager.saveLocationKey(locationKey)
+    fun saveLocationInfo(locationInfo: LocationInfo) {
+        sharedPrefsManager.saveLocationInfo(locationInfo)
     }
 
-    fun getLocationKey(): String? {
-        return sharedPrefsManager.loadLocationKey()
+    fun getLocationInfo(): LocationInfo? {
+        return sharedPrefsManager.loadLocationInfo()
     }
 
 }

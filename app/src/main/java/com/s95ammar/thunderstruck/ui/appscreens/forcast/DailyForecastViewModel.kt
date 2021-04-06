@@ -1,15 +1,13 @@
 package com.s95ammar.thunderstruck.ui.appscreens.forcast
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.s95ammar.thunderstruck.model.datasource.Resource
 import com.s95ammar.thunderstruck.model.datasource.local.db.entity.DailyForecastEntity
 import com.s95ammar.thunderstruck.model.datasource.remote.accuwheatherapi.isDataFresh
 import com.s95ammar.thunderstruck.model.repository.ForecastRepository
 import com.s95ammar.thunderstruck.ui.appscreens.forcast.data.DailyForecast
 import com.s95ammar.thunderstruck.ui.appscreens.forcast.data.DataFreshness
+import com.s95ammar.thunderstruck.ui.appscreens.location.data.LocationInfo
 import com.s95ammar.thunderstruck.ui.common.LoadingState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -25,21 +23,41 @@ class DailyForecastViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _dailyForecastList = MutableLiveData<List<DailyForecast>>()
+    private val _locationInfo = MutableLiveData<LocationInfo?>()
     private val _dataFreshness = MutableLiveData<DataFreshness?>()
     private val eventChannel = Channel<UiEvent>()
 
     val dailyForecastList: LiveData<List<DailyForecast>> = _dailyForecastList
+    val locationInfo: LiveData<LocationInfo?> = _locationInfo.distinctUntilChanged()
     val dataStatus: LiveData<DataFreshness?> = _dataFreshness
     val eventFlow = eventChannel.receiveAsFlow()
 
     init {
-        repository.saveLocationKey("324505") // TODO: remove after implementing location logic and handle location validation
-        loadDailyForecastList(repository.getLocationKey().orEmpty())
+        loadForecastOrSelectLocation()
     }
 
     fun onRefresh() {
-        // TODO: handle location validation
-        loadDailyForecastList(repository.getLocationKey().orEmpty(), forceUpdate = true)
+        loadForecastOrSelectLocation(forceUpdate = true)
+    }
+
+    private fun loadForecastOrSelectLocation(forceUpdate: Boolean = false) {
+        val locationInfo = repository.getLocationInfo()
+        _locationInfo.value = locationInfo
+
+        when (locationInfo) {
+            null -> viewModelScope.launch { eventChannel.send(UiEvent.NavigateToSearchScreen) }
+            else -> loadDailyForecastList(locationInfo.key, forceUpdate)
+        }
+    }
+
+    fun onSelectLocation() = viewModelScope.launch {
+        eventChannel.send(UiEvent.NavigateToSearchScreen)
+    }
+
+    fun onLocationSelected(locationInfo: LocationInfo) {
+        repository.saveLocationInfo(locationInfo)
+        _locationInfo.value = locationInfo
+        loadDailyForecastList(locationInfo.key, forceUpdate = true)
     }
 
     private fun loadDailyForecastList(locationKey: String, forceUpdate: Boolean = false) = viewModelScope.launch {

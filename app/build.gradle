@@ -60,6 +60,7 @@ dependencies {
     implementation "com.google.android.material:material:${depVersions.material}"
     implementation "androidx.constraintlayout:constraintlayout:${depVersions.constraintlayout}"
     implementation "androidx.legacy:legacy-support-v4:${depVersions.legacy}"
+    implementation "androidx.fragment:fragment-ktx:${depVersions.fragmentKtx}"
     testImplementation "junit:junit:${depVersions.junitJunit}"
     androidTestImplementation "androidx.test.ext:junit:${depVersions.androidxJunit}"
     androidTestImplementation "androidx.test.espresso:espresso-core:${depVersions.espresso}"

@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/locationPickerFragment"
-        android:name="com.s95ammar.thunderstruck.ui.appscreens.location.LocationPickerFragment"
+        android:name="com.s95ammar.thunderstruck.ui.appscreens.location.CitySearchFragment"
         android:label="location_picker_fragment"
-        tools:layout="@layout/location_picker_fragment" />
+        tools:layout="@layout/city_search_fragment" />
 </navigation>

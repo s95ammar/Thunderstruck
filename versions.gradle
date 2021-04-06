@@ -14,6 +14,7 @@ ext {
             "material"        : "1.3.0",
             "constraintlayout": "2.0.4",
             "legacy"          : "1.0.0",
+            "fragmentKtx"     : "1.3.2",
 
             // app
             "hilt"            : "2.31.2-alpha",

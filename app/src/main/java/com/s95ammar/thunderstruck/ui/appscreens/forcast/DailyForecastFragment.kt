@@ -5,14 +5,19 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.s95ammar.thunderstruck.Keys
 import com.s95ammar.thunderstruck.R
 import com.s95ammar.thunderstruck.databinding.DailyForecastFragmentBinding
 import com.s95ammar.thunderstruck.ui.appscreens.forcast.adapter.DailyForecastAdapter
 import com.s95ammar.thunderstruck.ui.appscreens.forcast.data.DailyForecast
 import com.s95ammar.thunderstruck.ui.appscreens.forcast.data.DataFreshness
+import com.s95ammar.thunderstruck.ui.appscreens.location.data.LocationInfo
 import com.s95ammar.thunderstruck.ui.common.LoadingState
 import com.s95ammar.thunderstruck.ui.common.ViewBindingUnavailableException
 import com.s95ammar.thunderstruck.util.DateUtil
@@ -40,12 +45,15 @@ class DailyForecastFragment : Fragment(R.layout.daily_forecast_fragment) {
     private fun setUpViews() {
         binding.dailyForecastRecyclerView.adapter = adapter
         binding.dailyForecastRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.dailyForecastRecyclerView.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
         binding.swipeToRefresh.setOnRefreshListener { viewModel.onRefresh() }
+        binding.locationTextView.setOnClickListener { viewModel.onSelectLocation() }
     }
 
     private fun initObservers() {
         viewModel.dailyForecastList.observe(viewLifecycleOwner) { setDailyForecastList(it) }
         viewModel.dataStatus.observe(viewLifecycleOwner) { setDataStatus(it) }
+        viewModel.locationInfo.observe(viewLifecycleOwner) { setLocationInfo(it) }
 
         lifecycleScope.launchWhenStarted {
             viewModel.eventFlow.collect { handleUiEvent(it) }
@@ -74,9 +82,17 @@ class DailyForecastFragment : Fragment(R.layout.daily_forecast_fragment) {
         }
     }
 
+    private fun setLocationInfo(locationInfo: LocationInfo?) {
+        binding.locationTextView.text = getString(R.string.current_location, locationInfo?.city ?: getString(R.string.not_selected))
+    }
+
     private fun handleUiEvent(uiEvent: UiEvent) {
         when (uiEvent) {
             is UiEvent.DisplayLoadingState -> displayLoadingState(uiEvent.loadingState)
+            is UiEvent.NavigateToSearchScreen -> {
+                listenToLocationResult()
+                navigateToSearchScreen()
+            }
         }
     }
 
@@ -91,6 +107,18 @@ class DailyForecastFragment : Fragment(R.layout.daily_forecast_fragment) {
                 binding.swipeToRefresh.isRefreshing = false
             }
         }
+    }
+
+    private fun listenToLocationResult() {
+        setFragmentResultListener(Keys.LOCATION_INFO_CHANGED) { _, bundle ->
+            bundle.getParcelable<LocationInfo>(Keys.LOCATION_INFO)?.let { locationInfo ->
+                viewModel.onLocationSelected(locationInfo)
+            }
+        }
+    }
+
+    private fun navigateToSearchScreen() {
+        findNavController().navigate(R.id.action_forecastFragment_to_locationPickerFragment)
     }
 
     override fun onDestroyView() {

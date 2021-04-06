@@ -1,7 +1,9 @@
 package com.s95ammar.thunderstruck.model.datasource.local.sharedprefs
 
 import android.content.SharedPreferences
-import com.s95ammar.thunderstruck.model.common.Keys
+import com.google.gson.Gson
+import com.s95ammar.thunderstruck.Keys
+import com.s95ammar.thunderstruck.ui.appscreens.location.data.LocationInfo
 import javax.inject.Inject
 
 class SharedPrefsManagerImpl @Inject constructor(private val sharedPreferences: SharedPreferences) : SharedPrefsManager {
@@ -10,11 +12,13 @@ class SharedPrefsManagerImpl @Inject constructor(private val sharedPreferences: 
         const val SHARED_PREFERENCES_NAME = "THUNDERSTRUCK_SHARED_PREFERENCES"
     }
 
-    override fun saveLocationKey(locationKey: String) {
-        sharedPreferences.edit().putString(Keys.LOCATION_KEY, locationKey).apply()
+    override fun saveLocationInfo(locationInfo: LocationInfo) {
+        sharedPreferences.edit().putString(Keys.LOCATION_INFO, Gson().toJson(locationInfo)).apply()
     }
 
-    override fun loadLocationKey(): String? {
-        return sharedPreferences.getString(Keys.LOCATION_KEY, null)
+    override fun loadLocationInfo(): LocationInfo? {
+        return sharedPreferences.getString(Keys.LOCATION_INFO, null)?.let { json ->
+            Gson().fromJson(json, LocationInfo::class.java)
+        }
     }
 }
