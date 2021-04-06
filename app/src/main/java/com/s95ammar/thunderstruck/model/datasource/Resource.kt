@@ -24,15 +24,15 @@ sealed class Resource<T>(
 
 sealed class ResourceException(description: String) : IllegalArgumentException(description) {
 
-    class DataNullInSuccess : ResourceException(ERROR_MSG_DATA_NULL_IN_RESOURCE_SUCCESS) {
+    class DataNullInSuccess : ResourceException(ERROR_MSG) {
         companion object {
-            private const val ERROR_MSG_DATA_NULL_IN_RESOURCE_SUCCESS = "Resource is of type Success, but 'data' field is null"
+            private const val ERROR_MSG = "Resource is of type Success, but 'data' field is null"
         }
     }
 
-    class ThrowableNullInError : ResourceException(ERROR_MSG_THROWABLE_NULL_IN_RESOURCE_ERROR) {
+    class ThrowableNullInError : ResourceException(ERROR_MSG) {
         companion object {
-            private const val ERROR_MSG_THROWABLE_NULL_IN_RESOURCE_ERROR = "Resource is of type Error, but 'error' field is null"
+            private const val ERROR_MSG = "Resource is of type Error, but 'error' field is null"
         }
     }
 

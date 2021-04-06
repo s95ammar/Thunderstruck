@@ -8,4 +8,5 @@
     <string name="format_location">%s, %s, %s</string>
     <string name="current_location">Location: %s. Tap to change</string>
     <string name="not_selected">not selected</string>
+    <string name="error_occurred">An error has occurred</string>
 </resources>

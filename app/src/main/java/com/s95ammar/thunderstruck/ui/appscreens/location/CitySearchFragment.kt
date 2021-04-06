@@ -84,7 +84,9 @@ class CitySearchFragment : Fragment(R.layout.city_search_fragment) {
     private fun displayLoadingState(loadingState: LoadingState) {
         when (loadingState) {
             is LoadingState.Error -> {
-                Toast.makeText(requireContext(), loadingState.throwable.localizedMessage.orEmpty(), Toast.LENGTH_SHORT).show()
+                val errorMessage = loadingState.throwable.localizedMessage ?: getString(R.string.error_occurred)
+                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+                binding.progressBar.isVisible = false
             }
             is LoadingState.Loading -> binding.progressBar.isVisible = true
             is LoadingState.Success -> {

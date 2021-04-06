@@ -99,8 +99,9 @@ class DailyForecastFragment : Fragment(R.layout.daily_forecast_fragment) {
     private fun displayLoadingState(loadingState: LoadingState) {
         when (loadingState) {
             is LoadingState.Error -> {
+                val errorMessage = loadingState.throwable.localizedMessage ?: getString(R.string.error_occurred)
+                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
                 binding.swipeToRefresh.isRefreshing = false
-                Toast.makeText(requireContext(), loadingState.throwable.localizedMessage.orEmpty(), Toast.LENGTH_SHORT).show()
             }
             is LoadingState.Loading -> binding.swipeToRefresh.isRefreshing = true
             is LoadingState.Success -> {
