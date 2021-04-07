@@ -1,6 +1,9 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-parcelize'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -9,18 +12,33 @@ android {
 
     defaultConfig {
         applicationId "com.s95ammar.thunderstruck"
-        minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion appMinSdk
+        targetSdkVersion appTargetSdk
+        versionCode appVersionCode
+        versionName appVersionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += [
+                        "room.schemaLocation"  : "$projectDir/schemas".toString(),
+                        "room.incremental"     : "true",
+                        "room.expandProjection": "true"
+                ]
+            }
+        }
+
     }
 
     buildTypes {
+        debug {
+            buildConfigField "String", "SERVER_BASE_URL", SERVER_BASE_URL_DEV
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "SERVER_BASE_URL", SERVER_BASE_URL_PROD
         }
     }
     compileOptions {
@@ -30,16 +48,49 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.3.2'
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.3.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation "androidx.core:core-ktx:${depVersions.coreKtx}"
+    implementation "androidx.appcompat:appcompat:${depVersions.appcompat}"
+    implementation "com.google.android.material:material:${depVersions.material}"
+    implementation "androidx.constraintlayout:constraintlayout:${depVersions.constraintlayout}"
+    implementation "androidx.legacy:legacy-support-v4:${depVersions.legacy}"
+    implementation "androidx.fragment:fragment-ktx:${depVersions.fragmentKtx}"
+    testImplementation "junit:junit:${depVersions.junitJunit}"
+    androidTestImplementation "androidx.test.ext:junit:${depVersions.androidxJunit}"
+    androidTestImplementation "androidx.test.espresso:espresso-core:${depVersions.espresso}"
+
+    // Hilt
+    implementation "com.google.dagger:hilt-android:${depVersions.hilt}"
+    kapt "com.google.dagger:hilt-android-compiler:${depVersions.hilt}"
+
+    implementation "androidx.hilt:hilt-lifecycle-viewmodel:${depVersions.hiltLifecycle}"
+    kapt "androidx.hilt:hilt-compiler:${depVersions.hiltLifecycle}"
+    implementation "androidx.hilt:hilt-navigation-fragment:${depVersions.hiltNavigation}"
+
+
+    // Navigation
+    implementation "androidx.navigation:navigation-fragment-ktx:${depVersions.navigation}"
+    implementation "androidx.navigation:navigation-ui-ktx:${depVersions.navigation}"
+
+    // lifecycle
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${depVersions.lifecycle}"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:${depVersions.lifecycle}"
+    implementation "androidx.lifecycle:lifecycle-extensions:${depVersions.lifecycleExt}"
+
+    // Persistence
+    implementation "androidx.room:room-runtime:${depVersions.room}"
+    kapt "androidx.room:room-compiler:${depVersions.room}"
+    implementation "androidx.room:room-ktx:${depVersions.room}"
+
+    // retrofit
+    implementation "com.squareup.retrofit2:retrofit:${depVersions.retrofit}"
+    implementation "com.squareup.retrofit2:converter-gson:${depVersions.retrofit}"
+    implementation "com.squareup.okhttp3:logging-interceptor:${depVersions.okhttp}"
+
 }
