@@ -26,8 +26,8 @@ class ForecastDaoTest {
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    private lateinit var db: ThunderstruckDb
     private lateinit var dao: ForecastDao
+    private lateinit var db: ThunderstruckDb
 
     @Before
     fun setUp() {
@@ -40,22 +40,22 @@ class ForecastDaoTest {
 
     @Test
     fun `insert and read operations`() = runBlockingTest {
-        val forecastEntityList = FakeData.fiveDailyForecastEntityList
+        val dataList = FakeData.dailyForecastEntityList
 
-        dao.insert(forecastEntityList)
-        val fullDailyForecastEntityList = dao.getFullDailyForecastEntityList().first()
-        assertThat(fullDailyForecastEntityList).containsAtLeastElementsIn(forecastEntityList)
+        dao.insert(dataList)
+        val allDataFromTable = dao.getFullDailyForecastEntityList().first()
+        assertThat(allDataFromTable).containsAtLeastElementsIn(dataList)
     }
 
     @Test
     fun `delete all operation`() = runBlockingTest {
-        val forecastEntityList = FakeData.fiveDailyForecastEntityList
-        dao.insert(forecastEntityList)
+        val dataList = FakeData.dailyForecastEntityList
+        dao.insert(dataList)
 
         dao.deleteAllDailyForecasts()
 
-        val fullDailyForecastEntityList = dao.getFullDailyForecastEntityList().first()
-        assertThat(fullDailyForecastEntityList).isEmpty()
+        val allDataFromTable = dao.getFullDailyForecastEntityList().first()
+        assertThat(allDataFromTable).isEmpty()
     }
 
     @After

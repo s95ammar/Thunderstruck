@@ -7,7 +7,7 @@ import java.util.*
 
 object FakeData {
 
-    val fiveDailyForecastEntityList = listOf(
+    val dailyForecastEntityList = listOf(
         DailyForecastEntity(
             dayTimestampUnixMs = Calendar.getInstance().apply { set(Calendar.DAY_OF_WEEK, Calendar.MONDAY) }.timeInMillis,
             dayIconType = IntIconType.CLEAR,

@@ -44,7 +44,7 @@ class LocalDataSourceTest {
 
     @Test
     fun `deleteAllAndInsert calls both delete and insert on dao and in order`() = runBlocking { // Room transactions don't work with runBlockingTest :/
-        val data = FakeData.fiveDailyForecastEntityList
+        val data = FakeData.dailyForecastEntityList
         coEvery { dao.deleteAllDailyForecasts() } just Runs
         coEvery { dao.insert(data) } just Runs
 
@@ -58,12 +58,12 @@ class LocalDataSourceTest {
 
     @Test
     fun `getFullDailyForecastEntityList forwards the call to dao and returns the same flow`() {
-        val daoReturnValue = flowOf(FakeData.fiveDailyForecastEntityList)
+        val daoReturnValue = flowOf(FakeData.dailyForecastEntityList)
         every { dao.getFullDailyForecastEntityList() } returns daoReturnValue
 
-        val returnValue = localDataSource.getFullDailyForecastEntityList()
+        val actualReturnValue = localDataSource.getFullDailyForecastEntityList()
 
-        assertThat(returnValue).isSameInstanceAs(daoReturnValue)
+        assertThat(actualReturnValue).isSameInstanceAs(daoReturnValue)
     }
 
     @Test
@@ -81,9 +81,9 @@ class LocalDataSourceTest {
         val sharedPrefsReturnValue = FakeData.dummyLocationInfo
         every { sharedPrefsManager.loadLocationInfo() } returns sharedPrefsReturnValue
 
-        val returnValue = localDataSource.getLocationInfo()
+        val actualReturnValue = localDataSource.getLocationInfo()
 
-        assertThat(returnValue).isSameInstanceAs(sharedPrefsReturnValue)
+        assertThat(actualReturnValue).isSameInstanceAs(sharedPrefsReturnValue)
     }
 
 }
