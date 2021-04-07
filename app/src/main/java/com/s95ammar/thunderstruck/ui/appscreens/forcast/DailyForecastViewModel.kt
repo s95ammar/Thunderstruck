@@ -40,16 +40,6 @@ class DailyForecastViewModel @Inject constructor(
         loadForecastOrSelectLocation(forceUpdate = true)
     }
 
-    private fun loadForecastOrSelectLocation(forceUpdate: Boolean = false) {
-        val locationInfo = repository.getLocationInfo()
-        _locationInfo.value = locationInfo
-
-        when (locationInfo) {
-            null -> viewModelScope.launch { eventChannel.send(UiEvent.NavigateToSearchScreen) }
-            else -> loadDailyForecastList(locationInfo.key, forceUpdate)
-        }
-    }
-
     fun onSelectLocation() = viewModelScope.launch {
         eventChannel.send(UiEvent.NavigateToSearchScreen)
     }
@@ -58,6 +48,16 @@ class DailyForecastViewModel @Inject constructor(
         repository.saveLocationInfo(locationInfo)
         _locationInfo.value = locationInfo
         loadDailyForecastList(locationInfo.key, forceUpdate = true)
+    }
+
+    private fun loadForecastOrSelectLocation(forceUpdate: Boolean = false) {
+        val locationInfo = repository.getLocationInfo()
+        _locationInfo.value = locationInfo
+
+        when (locationInfo) {
+            null -> viewModelScope.launch { eventChannel.send(UiEvent.NavigateToSearchScreen) }
+            else -> loadDailyForecastList(locationInfo.key, forceUpdate)
+        }
     }
 
     private fun loadDailyForecastList(locationKey: String, forceUpdate: Boolean = false) = viewModelScope.launch {

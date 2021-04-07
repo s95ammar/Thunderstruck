@@ -65,7 +65,6 @@ class DailyForecastFragment : Fragment(R.layout.daily_forecast_fragment) {
     }
 
     private fun setDataStatus(dataFreshness: DataFreshness?) {
-
         if (dataFreshness != null) {
             if (dataFreshness.isDataFresh) {
                 binding.dataStatusTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_check, 0, 0, 0)
