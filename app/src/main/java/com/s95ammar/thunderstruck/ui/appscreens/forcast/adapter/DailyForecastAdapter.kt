@@ -11,7 +11,7 @@ import com.s95ammar.thunderstruck.databinding.ItemDailyForecastBinding
 import com.s95ammar.thunderstruck.model.common.IntIconType
 import com.s95ammar.thunderstruck.ui.appscreens.forcast.data.DailyForecast
 import com.s95ammar.thunderstruck.util.DateUtil
-import java.util.*
+import java.util.Date
 
 class DailyForecastAdapter : ListAdapter<DailyForecast, DailyForecastAdapter.DailyForecastViewHolder>(DiffUtilCallback()) {
 

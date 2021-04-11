@@ -53,6 +53,4 @@ class ForecastRepository @Inject constructor(
             emit(Resource.Error(t))
         }
     }.flowOn(Dispatchers.IO)
-
-
 }

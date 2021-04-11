@@ -3,7 +3,7 @@ package com.s95ammar.thunderstruck.model
 import com.s95ammar.thunderstruck.model.common.IntIconType
 import com.s95ammar.thunderstruck.model.datasource.local.db.entity.DailyForecastEntity
 import com.s95ammar.thunderstruck.ui.appscreens.location.data.LocationInfo
-import java.util.*
+import java.util.Calendar
 
 object FakeData {
 

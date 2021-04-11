@@ -1,7 +1,13 @@
 package com.s95ammar.thunderstruck.model.datasource
 
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import retrofit2.Response
 
 fun <Dto, Entity> networkBoundResource(
@@ -26,7 +32,6 @@ fun <Dto, Entity> networkBoundResource(
         } catch (t: Throwable) {
             flowOf(Resource.Error(data = entity, error = t))
         }
-
     } else {
         flowOf(Resource.Success(entity))
     }

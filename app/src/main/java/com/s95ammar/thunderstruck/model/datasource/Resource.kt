@@ -35,5 +35,4 @@ sealed class ResourceException(description: String) : IllegalArgumentException(d
             private const val ERROR_MSG = "Resource is of type Error, but 'error' field is null"
         }
     }
-
 }

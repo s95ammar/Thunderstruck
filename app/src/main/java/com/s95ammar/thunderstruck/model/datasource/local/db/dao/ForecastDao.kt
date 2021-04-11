@@ -18,5 +18,4 @@ interface ForecastDao {
 
     @Query("DELETE FROM dailyForecast")
     suspend fun deleteAllDailyForecasts()
-
 }

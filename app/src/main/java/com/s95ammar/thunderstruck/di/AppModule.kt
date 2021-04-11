@@ -24,5 +24,4 @@ abstract class AppModule {
 
     @Binds
     abstract fun bindSharedPreferencesManager(sharedPreferences: SharedPrefsManagerImpl): SharedPrefsManager
-
 }

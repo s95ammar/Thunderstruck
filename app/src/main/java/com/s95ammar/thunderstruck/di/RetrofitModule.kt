@@ -40,5 +40,4 @@ object RetrofitModule {
             .build()
             .create(ApiService::class.java)
     }
-
 }

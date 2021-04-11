@@ -18,5 +18,4 @@ class RemoteDataSource @Inject constructor(
     suspend fun getCitySearchResults(query: String): Response<List<LocationInfoDto>> {
         return apiService.getCitySearchResults(query, Security.API_KEY)
     }
-
 }

@@ -9,8 +9,14 @@ import com.s95ammar.thunderstruck.model.FakeData
 import com.s95ammar.thunderstruck.model.datasource.local.db.ThunderstruckDb
 import com.s95ammar.thunderstruck.model.datasource.local.db.dao.ForecastDao
 import com.s95ammar.thunderstruck.model.datasource.local.sharedprefs.SharedPrefsManager
-import io.mockk.*
+import io.mockk.MockKAnnotations
+import io.mockk.Runs
+import io.mockk.coEvery
+import io.mockk.coVerifyOrder
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
+import io.mockk.just
+import io.mockk.verify
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
@@ -85,5 +91,4 @@ class LocalDataSourceTest {
 
         assertThat(actualReturnValue).isSameInstanceAs(sharedPrefsReturnValue)
     }
-
 }

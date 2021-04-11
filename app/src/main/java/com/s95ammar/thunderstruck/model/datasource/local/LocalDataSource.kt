@@ -33,5 +33,4 @@ class LocalDataSource @Inject constructor(
     fun getLocationInfo(): LocationInfo? {
         return sharedPrefsManager.loadLocationInfo()
     }
-
 }
