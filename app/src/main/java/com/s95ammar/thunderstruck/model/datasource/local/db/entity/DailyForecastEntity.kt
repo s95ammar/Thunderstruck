@@ -21,7 +21,6 @@ data class DailyForecastEntity(
     @PrimaryKey(autoGenerate = true)
     var id = 0
 
-
     object DtoMapper {
         fun toEntity(dailyForecastDto: ForecastDto.DailyForecastDto): DailyForecastEntity? {
             return DailyForecastEntity(

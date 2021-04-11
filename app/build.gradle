@@ -51,6 +51,16 @@ android {
     buildFeatures {
         viewBinding true
     }
+    sourceSets {
+        androidTest.java.srcDirs += "src/testCommon/java"
+        test.java.srcDirs += "src/testCommon/java"
+    }
+    packagingOptions {
+        exclude "META-INF/licenses/**"
+        exclude "META-INF/AL2.0"
+        exclude "META-INF/LGPL2.1"
+        exclude "**/attach_hotspot_windows.dll"
+    }
 }
 
 dependencies {
@@ -61,9 +71,31 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:${depVersions.constraintlayout}"
     implementation "androidx.legacy:legacy-support-v4:${depVersions.legacy}"
     implementation "androidx.fragment:fragment-ktx:${depVersions.fragmentKtx}"
+
+    // local tests
     testImplementation "junit:junit:${depVersions.junitJunit}"
+    testImplementation "org.hamcrest:hamcrest-all:${depVersions.hamcrest}"
+    testImplementation "androidx.test:core:${depVersions.androidxTest}"
+    testImplementation "androidx.test:core-ktx:${depVersions.androidxTest}"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${depVersions.coroutinesTest}"
+    testImplementation "org.robolectric:robolectric:${depVersions.robolectric}"
+    testImplementation "androidx.test.ext:junit:${depVersions.androidxJunit}"
+    testImplementation "com.google.truth:truth:${depVersions.googleTruth}"
+    testImplementation "androidx.arch.core:core-testing:${depVersions.androidxCoreTest}"
+    testImplementation "io.mockk:mockk:${depVersions.mockk}"
+
+    // instrumented tests
     androidTestImplementation "androidx.test.ext:junit:${depVersions.androidxJunit}"
     androidTestImplementation "androidx.test.espresso:espresso-core:${depVersions.espresso}"
+    androidTestImplementation "junit:junit:${depVersions.junitJunit}"
+    androidTestImplementation "androidx.test:core:${depVersions.androidxTest}"
+    androidTestImplementation "androidx.test:core-ktx:${depVersions.androidxTest}"
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${depVersions.coroutinesTest}"
+    androidTestImplementation "org.robolectric:robolectric:${depVersions.robolectric}"
+    androidTestImplementation "androidx.test.ext:junit:${depVersions.androidxJunit}"
+    androidTestImplementation "com.google.truth:truth:${depVersions.googleTruth}"
+    androidTestImplementation "androidx.arch.core:core-testing:${depVersions.androidxCoreTest}"
+    androidTestImplementation "io.mockk:mockk:${depVersions.mockk}"
 
     // Hilt
     implementation "com.google.dagger:hilt-android:${depVersions.hilt}"
