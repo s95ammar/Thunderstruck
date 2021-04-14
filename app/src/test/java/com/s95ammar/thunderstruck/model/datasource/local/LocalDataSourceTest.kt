@@ -9,8 +9,14 @@ import com.s95ammar.thunderstruck.model.FakeData
 import com.s95ammar.thunderstruck.model.datasource.local.db.ThunderstruckDb
 import com.s95ammar.thunderstruck.model.datasource.local.db.dao.ForecastDao
 import com.s95ammar.thunderstruck.model.datasource.local.sharedprefs.SharedPrefsManager
-import io.mockk.*
+import io.mockk.MockKAnnotations
+import io.mockk.Runs
+import io.mockk.coEvery
+import io.mockk.coVerifyOrder
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
+import io.mockk.just
+import io.mockk.verify
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
@@ -21,7 +27,7 @@ import java.util.concurrent.Executors
 @RunWith(AndroidJUnit4::class)
 class LocalDataSourceTest {
 
-    private lateinit var localDataSource: LocalDataSource
+    private lateinit var localDataSource: LocalDataSourceImpl
     private lateinit var db: ThunderstruckDb
 
     @MockK
@@ -39,12 +45,12 @@ class LocalDataSourceTest {
             .build()
 
         MockKAnnotations.init(this)
-        localDataSource = LocalDataSource(sharedPrefsManager, db, dao)
+        localDataSource = LocalDataSourceImpl(sharedPrefsManager, db, dao)
     }
 
     @Test
     fun `deleteAllAndInsert calls both delete and insert on dao and in order`() = runBlocking { // Room transactions don't work with runBlockingTest :/
-        val data = FakeData.dailyForecastEntityList
+        val data = FakeData.freshDailyForecastEntityList
         coEvery { dao.deleteAllDailyForecasts() } just Runs
         coEvery { dao.insert(data) } just Runs
 
@@ -58,7 +64,7 @@ class LocalDataSourceTest {
 
     @Test
     fun `getFullDailyForecastEntityList forwards the call to dao and returns the same flow`() {
-        val daoReturnValue = flowOf(FakeData.dailyForecastEntityList)
+        val daoReturnValue = flowOf(FakeData.freshDailyForecastEntityList)
         every { dao.getFullDailyForecastEntityList() } returns daoReturnValue
 
         val actualReturnValue = localDataSource.getFullDailyForecastEntityList()
