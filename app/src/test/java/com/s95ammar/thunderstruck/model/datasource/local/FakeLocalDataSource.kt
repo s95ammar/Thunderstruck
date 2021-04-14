@@ -32,7 +32,7 @@ class FakeLocalDataSource : LocalDataSource {
         _dailyForecastEntityList.addAll(forecastEntityList)
     }
 
-    override fun getFullDailyForecastEntityList(): Flow<List<DailyForecastEntity>> {
+    override fun getFullDailyForecastEntityListFlow(): Flow<List<DailyForecastEntity>> {
         return flowOf(_dailyForecastEntityList)
     }
 

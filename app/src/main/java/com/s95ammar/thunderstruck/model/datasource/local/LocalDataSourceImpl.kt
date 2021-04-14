@@ -22,8 +22,8 @@ class LocalDataSourceImpl @Inject constructor(
         }
     }
 
-    override fun getFullDailyForecastEntityList(): Flow<List<DailyForecastEntity>> {
-        return forecastDao.getFullDailyForecastEntityList()
+    override fun getFullDailyForecastEntityListFlow(): Flow<List<DailyForecastEntity>> {
+        return forecastDao.getFullDailyForecastEntityListFlow()
     }
 
     override fun saveLocationInfo(locationInfo: LocationInfo) {

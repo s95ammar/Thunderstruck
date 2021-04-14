@@ -65,9 +65,9 @@ class LocalDataSourceTest {
     @Test
     fun `getFullDailyForecastEntityList forwards the call to dao and returns the same flow`() {
         val daoReturnValue = flowOf(FakeData.freshDailyForecastEntityList)
-        every { dao.getFullDailyForecastEntityList() } returns daoReturnValue
+        every { dao.getFullDailyForecastEntityListFlow() } returns daoReturnValue
 
-        val actualReturnValue = localDataSource.getFullDailyForecastEntityList()
+        val actualReturnValue = localDataSource.getFullDailyForecastEntityListFlow()
 
         assertThat(actualReturnValue).isSameInstanceAs(daoReturnValue)
     }

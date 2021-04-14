@@ -43,7 +43,7 @@ class ForecastDaoTest {
         val dataList = FakeData.dailyForecastEntityList
 
         dao.insert(dataList)
-        val allDataFromTable = dao.getFullDailyForecastEntityList().first()
+        val allDataFromTable = dao.getFullDailyForecastEntityListFlow().first()
         assertThat(allDataFromTable).containsAtLeastElementsIn(dataList)
     }
 
@@ -54,7 +54,7 @@ class ForecastDaoTest {
 
         dao.deleteAllDailyForecasts()
 
-        val allDataFromTable = dao.getFullDailyForecastEntityList().first()
+        val allDataFromTable = dao.getFullDailyForecastEntityListFlow().first()
         assertThat(allDataFromTable).isEmpty()
     }
 

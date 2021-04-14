@@ -27,9 +27,9 @@ class ForecastRepository @Inject constructor(
 
     fun getLocationInfo() = localDataSource.getLocationInfo()
 
-    fun getFiveDayForecast(locationKey: String, forceUpdate: Boolean = false): Flow<Resource<List<DailyForecastEntity>>> {
+    fun getFiveDayForecastFlow(locationKey: String, forceUpdate: Boolean = false): Flow<Resource<List<DailyForecastEntity>>> {
         return networkBoundResource(
-            queryFlow = { localDataSource.getFullDailyForecastEntityList() },
+            queryFlow = { localDataSource.getFullDailyForecastEntityListFlow() },
             fetch = { remoteDataSource.getFiveDayForecast(locationKey) },
             insert = { forecastDto ->
                 val entityList = forecastDto.dailyForecasts.orEmpty().mapNotNull {
@@ -47,7 +47,7 @@ class ForecastRepository @Inject constructor(
         )
     }
 
-    fun getCitySearchResults(query: String) = flow<Resource<List<LocationInfoDto>>> {
+    fun getCitySearchResultsFlow(query: String) = flow<Resource<List<LocationInfoDto>>> {
         emit(Resource.Loading())
         try {
             emit(Resource.Success(remoteDataSource.getCitySearchResults(query).parseResponse()))

@@ -36,16 +36,14 @@ class ForecastRepositoryTest {
     }
 
     @Test
-    fun `getFiveDayForecast() db data is fresh, forceUpdate = false, loads from LDS only when collected`() {
+    fun `getFiveDayForecastFlow() db data is fresh, forceUpdate = false, loads from LDS only when collected`() {
         mainCoroutineRule.runBlockingTest {
             lds.setDailyForecastEntityListFresh()
             val forceUpdate = false
 
-            val lastEmittedResource = repository.getFiveDayForecast("key", forceUpdate)
-                .toList() // collects the flow
-                .last()
+            val lastEmittedResource = repository.getFiveDayForecastFlow("key", forceUpdate).toList().last()
 
-            verify(exactly = 1) { lds.getFullDailyForecastEntityList() }
+            verify(exactly = 1) { lds.getFullDailyForecastEntityListFlow() }
             coVerify(exactly = 0) { rds.getFiveDayForecast(any()) }
             assertThat(lastEmittedResource).isInstanceOf(Resource.Success::class.java)
             assertThat(lastEmittedResource.data).isEqualTo(lds.dailyForecastEntityList)
@@ -53,20 +51,18 @@ class ForecastRepositoryTest {
     }
 
     @Test
-    fun `getFiveDayForecast() db data is outdated, forceUpdate = false, updates cache then returns fresh data from LDS, when collected`() {
+    fun `getFiveDayForecastFlow() db data is outdated, forceUpdate = false, updates cache then returns fresh data from LDS, when collected`() {
         mainCoroutineRule.runBlockingTest {
             lds.setDailyForecastEntityListOutdated()
             val dbDataBeforeCall = lds.dailyForecastEntityList.map { it.copy() }
             val forceUpdate = false
 
-            val lastEmittedResource = repository.getFiveDayForecast("key", forceUpdate)
-                .toList() // collects the flow
-                .last()
+            val lastEmittedResource = repository.getFiveDayForecastFlow("key", forceUpdate).toList().last()
 
             coVerifyOrder {
-                lds.getFullDailyForecastEntityList()
+                lds.getFullDailyForecastEntityListFlow()
                 rds.getFiveDayForecast(any())
-                lds.getFullDailyForecastEntityList()
+                lds.getFullDailyForecastEntityListFlow()
             }
             assertThat(lastEmittedResource).isInstanceOf(Resource.Success::class.java)
             assertThat(lds.dailyForecastEntityList).isNotEqualTo(dbDataBeforeCall)
@@ -75,19 +71,17 @@ class ForecastRepositoryTest {
     }
 
     @Test
-    fun `getFiveDayForecast() no db data, forceUpdate = false, updates cache then returns fresh data from LDS, when collected`() {
+    fun `getFiveDayForecastFlow() no db data, forceUpdate = false, updates cache then returns fresh data from LDS, when collected`() {
         mainCoroutineRule.runBlockingTest {
             lds.setDailyForecastEntityListEmpty()
             val forceUpdate = false
 
-            val lastEmittedResource = repository.getFiveDayForecast("key", forceUpdate)
-                .toList() // collects the flow
-                .last()
+            val lastEmittedResource = repository.getFiveDayForecastFlow("key", forceUpdate).toList().last()
 
             coVerifyOrder {
-                lds.getFullDailyForecastEntityList()
+                lds.getFullDailyForecastEntityListFlow()
                 rds.getFiveDayForecast(any())
-                lds.getFullDailyForecastEntityList()
+                lds.getFullDailyForecastEntityListFlow()
             }
             assertThat(lastEmittedResource).isInstanceOf(Resource.Success::class.java)
             assertThat(lastEmittedResource.data).isNotEmpty()
@@ -96,20 +90,18 @@ class ForecastRepositoryTest {
     }
 
     @Test
-    fun `getFiveDayForecast() db data is fresh, forceUpdate = true, updates cache then returns fresher data from LDS, when collected`() {
+    fun `getFiveDayForecastFlow() db data is fresh, forceUpdate = true, updates cache then returns fresher data from LDS, when collected`() {
         mainCoroutineRule.runBlockingTest {
             lds.setDailyForecastEntityListFresh()
             val dbDataBeforeCall = lds.dailyForecastEntityList.map { it.copy() }
             val forceUpdate = true
 
-            val lastEmittedResource = repository.getFiveDayForecast("key", forceUpdate)
-                .toList() // collects the flow
-                .last()
+            val lastEmittedResource = repository.getFiveDayForecastFlow("key", forceUpdate).toList().last()
 
             coVerifyOrder {
-                lds.getFullDailyForecastEntityList()
+                lds.getFullDailyForecastEntityListFlow()
                 rds.getFiveDayForecast(any())
-                lds.getFullDailyForecastEntityList()
+                lds.getFullDailyForecastEntityListFlow()
             }
             assertThat(lastEmittedResource).isInstanceOf(Resource.Success::class.java)
             assertThat(lds.dailyForecastEntityList).isNotEqualTo(dbDataBeforeCall)
@@ -118,19 +110,17 @@ class ForecastRepositoryTest {
     }
 
     @Test
-    fun `getFiveDayForecast() fetching fails, returns data from LDS, when collected`() {
+    fun `getFiveDayForecastFlow() fetching fails, returns data from LDS, when collected`() {
         mainCoroutineRule.runBlockingTest {
             rds.shouldReturnError = true
             lds.setDailyForecastEntityListOutdated()
             val dbDataBeforeCall = lds.dailyForecastEntityList.map { it.copy() }
             val forceUpdate = false
 
-            val lastEmittedResource = repository.getFiveDayForecast("key", forceUpdate)
-                .toList() // collects the flow
-                .last()
+            val lastEmittedResource = repository.getFiveDayForecastFlow("key", forceUpdate).toList().last()
 
             coVerifyOrder {
-                lds.getFullDailyForecastEntityList()
+                lds.getFullDailyForecastEntityListFlow()
                 rds.getFiveDayForecast(any())
             }
             assertThat(lastEmittedResource).isInstanceOf(Resource.Error::class.java)
@@ -141,11 +131,9 @@ class ForecastRepositoryTest {
     }
 
     @Test
-    fun `getCitySearchResults() fetching succeeds, returns Resource Success, when collected`() {
+    fun `getCitySearchResultsFlow() fetching succeeds, returns Resource Success, when collected`() {
         mainCoroutineRule.runBlockingTest {
-            val lastEmittedResource = repository.getCitySearchResults("bla")
-                .toList() // collects the flow
-                .last()
+            val lastEmittedResource = repository.getCitySearchResultsFlow("bla").toList().last()
 
             assertThat(lastEmittedResource).isInstanceOf(Resource.Success::class.java)
             assertThat(lastEmittedResource.data).isNotNull()
@@ -153,12 +141,11 @@ class ForecastRepositoryTest {
     }
 
     @Test
-    fun `getCitySearchResults() fetching fails, returns Resource Error, when collected`() {
+    fun `getCitySearchResultsFlow() fetching fails, returns Resource Error, when collected`() {
         mainCoroutineRule.runBlockingTest {
             rds.shouldReturnError = true
-            val lastEmittedResource = repository.getCitySearchResults("bla")
-                .toList() // collects the flow
-                .last()
+
+            val lastEmittedResource = repository.getCitySearchResultsFlow("bla").toList().last()
 
             assertThat(lastEmittedResource).isInstanceOf(Resource.Error::class.java)
             assertThat(lastEmittedResource.throwable).isNotNull()

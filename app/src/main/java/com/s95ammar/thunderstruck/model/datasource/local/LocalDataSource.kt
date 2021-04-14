@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface LocalDataSource {
     suspend fun deleteAllAndInsert(forecastEntityList: List<DailyForecastEntity>)
-    fun getFullDailyForecastEntityList(): Flow<List<DailyForecastEntity>>
+    fun getFullDailyForecastEntityListFlow(): Flow<List<DailyForecastEntity>>
     fun saveLocationInfo(locationInfo: LocationInfo)
     fun getLocationInfo(): LocationInfo?
 }
