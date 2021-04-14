@@ -70,56 +70,6 @@ object FakeData {
         )
     )
 
-/*
-    val dailyForecastEntityList = listOf(
-        DailyForecastEntity(
-            dayTimestampUnixMs = Calendar.getInstance().apply { set(Calendar.DAY_OF_WEEK, Calendar.MONDAY) }.timeInMillis,
-            dayIconType = IntIconType.CLEAR,
-            nightIconType = IntIconType.CLOUDY,
-            minTemperature = -5,
-            maxTemperature = 10,
-            temperatureUnit = "C",
-            createdTimestampUnixMs = System.currentTimeMillis(),
-        ),
-        DailyForecastEntity(
-            dayTimestampUnixMs = Calendar.getInstance().apply { set(Calendar.DAY_OF_WEEK, Calendar.TUESDAY) }.timeInMillis,
-            dayIconType = IntIconType.CLEAR,
-            nightIconType = IntIconType.CLOUDY,
-            minTemperature = -5,
-            maxTemperature = 10,
-            temperatureUnit = "C",
-            createdTimestampUnixMs = System.currentTimeMillis(),
-        ),
-        DailyForecastEntity(
-            dayTimestampUnixMs = Calendar.getInstance().apply { set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY) }.timeInMillis,
-            dayIconType = IntIconType.CLEAR,
-            nightIconType = IntIconType.CLOUDY,
-            minTemperature = -5,
-            maxTemperature = 10,
-            temperatureUnit = "C",
-            createdTimestampUnixMs = System.currentTimeMillis(),
-        ),
-        DailyForecastEntity(
-            dayTimestampUnixMs = Calendar.getInstance().apply { set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY) }.timeInMillis,
-            dayIconType = IntIconType.CLEAR,
-            nightIconType = IntIconType.CLOUDY,
-            minTemperature = -5,
-            maxTemperature = 10,
-            temperatureUnit = "C",
-            createdTimestampUnixMs = System.currentTimeMillis(),
-        ),
-        DailyForecastEntity(
-            dayTimestampUnixMs = Calendar.getInstance().apply { set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY) }.timeInMillis,
-            dayIconType = IntIconType.CLEAR,
-            nightIconType = IntIconType.CLOUDY,
-            minTemperature = -5,
-            maxTemperature = 10,
-            temperatureUnit = "C",
-            createdTimestampUnixMs = System.currentTimeMillis(),
-        ),
-    )
-*/
-
     val freshDailyForecastEntityList = remoteDailyForecastResponse.dailyForecasts.orEmpty().mapNotNull {
         DailyForecastEntity.DtoMapper.toEntity(it)
     }
