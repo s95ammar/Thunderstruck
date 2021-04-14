@@ -40,7 +40,7 @@ class ForecastDaoTest {
 
     @Test
     fun `insert and read operations`() = runBlockingTest {
-        val dataList = FakeData.dailyForecastEntityList
+        val dataList = FakeData.freshDailyForecastEntityList
 
         dao.insert(dataList)
         val allDataFromTable = dao.getFullDailyForecastEntityListFlow().first()
@@ -49,7 +49,7 @@ class ForecastDaoTest {
 
     @Test
     fun `delete all operation`() = runBlockingTest {
-        val dataList = FakeData.dailyForecastEntityList
+        val dataList = FakeData.freshDailyForecastEntityList
         dao.insert(dataList)
 
         dao.deleteAllDailyForecasts()
