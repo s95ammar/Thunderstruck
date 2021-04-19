@@ -10,7 +10,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:4.1.3"
+        classpath "com.android.tools.build:gradle:${depVersions.gradlePlugin}"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${depVersions.kotlin}"
         classpath "com.google.dagger:hilt-android-gradle-plugin:${depVersions.hilt}"
         classpath "org.jlleitschuh.gradle:ktlint-gradle:${depVersions.ktlint}"
