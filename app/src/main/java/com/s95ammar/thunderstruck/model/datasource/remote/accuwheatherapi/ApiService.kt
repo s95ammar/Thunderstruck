@@ -20,6 +20,4 @@ interface ApiService {
         @Query("q") query: String,
         @Query("apikey") apiKey: String
     ): Response<List<LocationInfoDto>>
-
-
 }

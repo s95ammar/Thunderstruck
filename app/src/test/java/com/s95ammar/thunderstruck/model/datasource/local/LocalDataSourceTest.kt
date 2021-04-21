@@ -91,5 +91,4 @@ class LocalDataSourceTest {
 
         assertThat(actualReturnValue).isSameInstanceAs(sharedPrefsReturnValue)
     }
-
 }

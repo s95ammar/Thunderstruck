@@ -4,4 +4,4 @@ import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class ThunderstruckApp: Application()
+class ThunderstruckApp : Application()

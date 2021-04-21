@@ -23,7 +23,7 @@ import com.s95ammar.thunderstruck.ui.common.ViewBindingUnavailableException
 import com.s95ammar.thunderstruck.util.DateUtil
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
-import java.util.*
+import java.util.Date
 import com.s95ammar.thunderstruck.ui.appscreens.forcast.data.ForecastUiEvent as UiEvent
 
 @AndroidEntryPoint

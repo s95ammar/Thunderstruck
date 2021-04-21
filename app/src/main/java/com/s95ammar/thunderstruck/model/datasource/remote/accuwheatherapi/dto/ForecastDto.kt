@@ -35,6 +35,4 @@ class ForecastDto(
         @SerializedName("Value") val value: Double?,
         @SerializedName("Unit") val unit: String?
     )
-
 }
-
