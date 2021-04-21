@@ -14,7 +14,7 @@ interface ForecastDao {
     suspend fun insert(forecastEntityList: List<DailyForecastEntity>)
 
     @Query("SELECT * FROM dailyForecast")
-    fun getFullDailyForecastEntityList(): Flow<List<DailyForecastEntity>>
+    fun getFullDailyForecastEntityListFlow(): Flow<List<DailyForecastEntity>>
 
     @Query("DELETE FROM dailyForecast")
     suspend fun deleteAllDailyForecasts()
