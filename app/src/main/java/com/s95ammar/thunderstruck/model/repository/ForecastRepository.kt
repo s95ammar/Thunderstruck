@@ -9,7 +9,7 @@ import com.s95ammar.thunderstruck.model.datasource.remote.RemoteDataSource
 import com.s95ammar.thunderstruck.model.datasource.remote.accuwheatherapi.dto.LocationInfoDto
 import com.s95ammar.thunderstruck.model.datasource.remote.accuwheatherapi.isDataFresh
 import com.s95ammar.thunderstruck.ui.appscreens.location.data.LocationInfo
-import kotlinx.coroutines.Dispatchers
+import com.s95ammar.thunderstruck.util.DispatcherProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -17,7 +17,8 @@ import javax.inject.Inject
 
 class ForecastRepository @Inject constructor(
     private val localDataSource: LocalDataSource,
-    private val remoteDataSource: RemoteDataSource
+    private val remoteDataSource: RemoteDataSource,
+    private val dispatcherProvider: DispatcherProvider
 ) {
 
     fun saveLocationInfo(locationInfo: LocationInfo) {
@@ -26,9 +27,9 @@ class ForecastRepository @Inject constructor(
 
     fun getLocationInfo() = localDataSource.getLocationInfo()
 
-    fun getFiveDayForecast(locationKey: String, forceUpdate: Boolean = false): Flow<Resource<List<DailyForecastEntity>>> {
+    fun getFiveDayForecastFlow(locationKey: String, forceUpdate: Boolean = false): Flow<Resource<List<DailyForecastEntity>>> {
         return networkBoundResource(
-            queryFlow = localDataSource.getFullDailyForecastEntityList(),
+            queryFlow = { localDataSource.getFullDailyForecastEntityListFlow() },
             fetch = { remoteDataSource.getFiveDayForecast(locationKey) },
             insert = { forecastDto ->
                 val entityList = forecastDto.dailyForecasts.orEmpty().mapNotNull {
@@ -41,16 +42,17 @@ class ForecastRepository @Inject constructor(
                 val isCacheOutdated = dailyForecastEntityList.any { entity -> !isDataFresh(entity.createdTimestampUnixMs) }
 
                 forceUpdate || dailyForecastEntityList.isEmpty() || isCacheOutdated
-            }
+            },
+            ioDispatcher = dispatcherProvider.io
         )
     }
 
-    fun getCitySearchResults(query: String) = flow<Resource<List<LocationInfoDto>>> {
+    fun getCitySearchResultsFlow(query: String) = flow<Resource<List<LocationInfoDto>>> {
         emit(Resource.Loading())
         try {
             emit(Resource.Success(remoteDataSource.getCitySearchResults(query).parseResponse()))
         } catch (t: Throwable) {
             emit(Resource.Error(t))
         }
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(dispatcherProvider.io)
 }

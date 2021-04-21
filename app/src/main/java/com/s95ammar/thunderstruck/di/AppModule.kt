@@ -2,8 +2,12 @@ package com.s95ammar.thunderstruck.di
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.s95ammar.thunderstruck.model.datasource.local.LocalDataSource
+import com.s95ammar.thunderstruck.model.datasource.local.LocalDataSourceImpl
 import com.s95ammar.thunderstruck.model.datasource.local.sharedprefs.SharedPrefsManager
 import com.s95ammar.thunderstruck.model.datasource.local.sharedprefs.SharedPrefsManagerImpl
+import com.s95ammar.thunderstruck.model.datasource.remote.RemoteDataSource
+import com.s95ammar.thunderstruck.model.datasource.remote.RemoteDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -24,4 +28,10 @@ abstract class AppModule {
 
     @Binds
     abstract fun bindSharedPreferencesManager(sharedPreferences: SharedPrefsManagerImpl): SharedPrefsManager
+
+    @Binds
+    abstract fun bindLocalDataSource(localDataSource: LocalDataSourceImpl): LocalDataSource
+
+    @Binds
+    abstract fun bindRemoteDataSource(remoteDataSource: RemoteDataSourceImpl): RemoteDataSource
 }

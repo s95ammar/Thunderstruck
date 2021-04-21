@@ -65,7 +65,7 @@ class DailyForecastViewModel @Inject constructor(
     }
 
     private fun loadDailyForecastList(locationKey: String, forceUpdate: Boolean = false) = viewModelScope.launch {
-        repository.getFiveDayForecast(locationKey, forceUpdate)
+        repository.getFiveDayForecastFlow(locationKey, forceUpdate)
             .collect { entityListResource ->
 
                 fun getDataFreshness(): DataFreshness? {

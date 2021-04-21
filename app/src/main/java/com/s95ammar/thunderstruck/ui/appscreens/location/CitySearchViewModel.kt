@@ -40,7 +40,7 @@ class CitySearchViewModel @Inject constructor(
             return@launch
         }
 
-        repository.getCitySearchResults(query)
+        repository.getCitySearchResultsFlow(query)
             .collect { resourceSearchResultDtoList ->
                 when (resourceSearchResultDtoList) {
                     is Resource.Error -> {

@@ -27,7 +27,7 @@ import java.util.concurrent.Executors
 @RunWith(AndroidJUnit4::class)
 class LocalDataSourceTest {
 
-    private lateinit var localDataSource: LocalDataSource
+    private lateinit var localDataSource: LocalDataSourceImpl
     private lateinit var db: ThunderstruckDb
 
     @MockK
@@ -45,12 +45,12 @@ class LocalDataSourceTest {
             .build()
 
         MockKAnnotations.init(this)
-        localDataSource = LocalDataSource(sharedPrefsManager, db, dao)
+        localDataSource = LocalDataSourceImpl(sharedPrefsManager, db, dao)
     }
 
     @Test
     fun `deleteAllAndInsert calls both delete and insert on dao and in order`() = runBlocking { // Room transactions don't work with runBlockingTest :/
-        val data = FakeData.dailyForecastEntityList
+        val data = FakeData.freshDailyForecastEntityList
         coEvery { dao.deleteAllDailyForecasts() } just Runs
         coEvery { dao.insert(data) } just Runs
 
@@ -64,10 +64,10 @@ class LocalDataSourceTest {
 
     @Test
     fun `getFullDailyForecastEntityList forwards the call to dao and returns the same flow`() {
-        val daoReturnValue = flowOf(FakeData.dailyForecastEntityList)
-        every { dao.getFullDailyForecastEntityList() } returns daoReturnValue
+        val daoReturnValue = flowOf(FakeData.freshDailyForecastEntityList)
+        every { dao.getFullDailyForecastEntityListFlow() } returns daoReturnValue
 
-        val actualReturnValue = localDataSource.getFullDailyForecastEntityList()
+        val actualReturnValue = localDataSource.getFullDailyForecastEntityListFlow()
 
         assertThat(actualReturnValue).isSameInstanceAs(daoReturnValue)
     }

@@ -39,21 +39,21 @@ class ForecastDaoTest {
 
     @Test
     fun `insert and read operations`() = runBlockingTest {
-        val dataList = FakeData.dailyForecastEntityList
+        val dataList = FakeData.freshDailyForecastEntityList
 
         dao.insert(dataList)
-        val allDataFromTable = dao.getFullDailyForecastEntityList().first()
+        val allDataFromTable = dao.getFullDailyForecastEntityListFlow().first()
         assertThat(allDataFromTable).containsAtLeastElementsIn(dataList)
     }
 
     @Test
     fun `delete all operation`() = runBlockingTest {
-        val dataList = FakeData.dailyForecastEntityList
+        val dataList = FakeData.freshDailyForecastEntityList
         dao.insert(dataList)
 
         dao.deleteAllDailyForecasts()
 
-        val allDataFromTable = dao.getFullDailyForecastEntityList().first()
+        val allDataFromTable = dao.getFullDailyForecastEntityListFlow().first()
         assertThat(allDataFromTable).isEmpty()
     }
 
